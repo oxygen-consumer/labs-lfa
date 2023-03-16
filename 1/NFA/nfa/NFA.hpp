@@ -12,7 +12,7 @@
 
 class NFA {
 private:
-    std::map<int, std::map<char, int>> graph;
+    std::map<int, std::multimap<char, int>> graph;
     std::map<int, bool> states;
     int start_state;
 
