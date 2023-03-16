@@ -59,6 +59,7 @@ void NFA::run() {
                 std::cout << path.top() << " ";
                 path.pop();
             }
+            std::cout << "\n";
         } else {
             fout << "NU\n";
         }
