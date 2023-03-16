@@ -50,15 +50,22 @@ void DFA::run() {
     while (words--) {
         std::string word;
         fin >> word;
-        if (verify(word, start_state)) {
+        std::stack<int> path;
+        if (verify(word, start_state, path)) {
             fout << "DA\n";
+            std::cout << word << ": ";
+            while (!path.empty()) {
+                std::cout << path.top() << " ";
+                path.pop();
+            }
+            std::cout << "\n";
         } else {
             fout << "NU\n";
         }
     }
 }
 
-bool DFA::verify(const std::string &word, int state) {
+bool DFA::verify(const std::string &word, int state, std::stack<int> &path) {
     if (word.empty()) {
         return states[state];
     }
@@ -68,7 +75,8 @@ bool DFA::verify(const std::string &word, int state) {
     std::string next_word = word.substr(1, word.size() - 1);
 
     if (graph[state].find(symbol) != graph[state].end()) {
-        return verify(next_word, graph[state][symbol]);
+        path.push(graph[state][symbol]);
+        return verify(next_word, graph[state][symbol], path);
     }
 
     return false;

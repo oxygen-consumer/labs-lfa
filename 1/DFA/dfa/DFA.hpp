@@ -8,6 +8,8 @@
 #include <fstream>
 #include <map>
 #include <string>
+#include <stack>
+#include <iostream>
 
 
 class DFA {
@@ -21,7 +23,7 @@ private:
 
     void build();
 
-    bool verify(const std::string& word, int state);
+    bool verify(const std::string& word, int state, std::stack<int>& path);
 
 public:
     explicit DFA(const std::string& input_filename, const std::string& output_filename);
