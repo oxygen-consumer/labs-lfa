@@ -30,7 +30,6 @@ void NFA::build() {
         char symbol;
         fin >> from >> to >> symbol;
         // add the transition to the graph
-//        graph[from][symbol] = to;
         graph[from].insert(std::make_pair(symbol, to));
     }
 
