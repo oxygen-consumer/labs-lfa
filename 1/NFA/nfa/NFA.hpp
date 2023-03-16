@@ -8,6 +8,8 @@
 #include <fstream>
 #include <map>
 #include <string>
+#include <iostream>
+#include <stack>
 
 
 class NFA {
@@ -21,7 +23,7 @@ private:
 
     void build();
 
-    bool verify(const std::string &word, int state);
+    bool verify(const std::string &word, int state, std::stack<int> &path);
 
 public:
     explicit NFA(const std::string &input_file, const std::string &output_file);

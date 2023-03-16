@@ -51,15 +51,21 @@ void NFA::run() {
     while (words--) {
         std::string word;
         fin >> word;
-        if (verify(word, start_state)) {
+        std::stack<int> path;
+        if (verify(word, start_state, path)) {
             fout << "DA\n";
+            std::cout << word << ": ";
+            while (!path.empty()) {
+                std::cout << path.top() << " ";
+                path.pop();
+            }
         } else {
             fout << "NU\n";
         }
     }
 }
 
-bool NFA::verify(const std::string &word, int state) {
+bool NFA::verify(const std::string &word, int state, std::stack<int> &path) {
     if (word.empty()) {
         return states[state];
     }
@@ -70,9 +76,11 @@ bool NFA::verify(const std::string &word, int state) {
     // run verify for all the states that can be reached from the current state
     for (auto &transition : graph[state]) {
         if (transition.first == symbol) {
-            if (verify(rest, transition.second)) {
+            path.push(transition.second);
+            if (verify(rest, transition.second, path)) {
                 return true;
             }
+            path.pop();
         }
     }
 
