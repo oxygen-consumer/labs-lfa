@@ -117,22 +117,30 @@ void E_NFA::run() {
     while (words--) {
         std::string word;
         fin >> word;
+        std::stack<int> path;
         bool ok = false;
         for (auto &state: start_states) {
-            if (verify(word, state)) {
+            if (verify(word, state, path)) {
                 ok = true;
                 break;
             }
+            path = {};
         }
         if (ok) {
             fout << "DA\n";
+            std::cout << word << ": ";
+            while (!path.empty()) {
+                std::cout << path.top() << " ";
+                path.pop();
+            }
+            std::cout << "\n";
         } else {
             fout << "NU\n";
         }
     }
 }
 
-bool E_NFA::verify(const std::string &word, int state) {
+bool E_NFA::verify(const std::string &word, int state, std::stack<int> &path) {
     // same as in NFA science we transform the E-NFA to NFA
 
     if (word.empty()) {
@@ -143,9 +151,11 @@ bool E_NFA::verify(const std::string &word, int state) {
 
     for (auto &transition: graph[state]) {
         if (transition.first == symbol) {
-            if (verify(word.substr(1), transition.second)) {
+            path.push(transition.second);
+            if (verify(word.substr(1), transition.second, path)) {
                 return true;
             }
+            path.pop();
         }
     }
 

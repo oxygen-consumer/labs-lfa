@@ -10,6 +10,7 @@
 #include <string>
 #include <set>
 #include <iostream>
+#include <stack>
 
 
 class E_NFA {
@@ -23,7 +24,7 @@ private:
 
     void build();
 
-    bool verify(const std::string &word, int state);
+    bool verify(const std::string &word, int state, std::stack<int> &path);
 
     void epsilon_closure(int state, std::set<int> &closure);
 
