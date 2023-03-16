@@ -26,10 +26,10 @@ void DFA::build() {
     // read transitions
     fin >> tmp; // num of transitions
     while (tmp--) {
-        int x, y;
-        char l;
-        fin >> x >> y >> l;
-        this->graph[x][l] = y;
+        int from, to;
+        char symbol;
+        fin >> from >> to >> symbol;
+        this->graph[from][symbol] = to;
     }
 
     fin >> start_state;
@@ -59,20 +59,17 @@ void DFA::run() {
 }
 
 bool DFA::verify(const std::string &word, int state) {
-    char l = word[0];
-    bool done = word.size() == 1;
+    if (word.empty()) {
+        return states[state];
+    }
+
+    char symbol = word[0];
 
     std::string next_word = word.substr(1, word.size() - 1);
 
-    int next_state;
-    try {
-        next_state = graph.at(state).at(l);
-    } catch (std::out_of_range &e) {
-        return false;
-    };
-
-    if (done) {
-        return states[next_state];
+    if (graph[state].find(symbol) != graph[state].end()) {
+        return verify(next_word, graph[state][symbol]);
     }
-    return verify(next_word, next_state);
+
+    return false;
 }

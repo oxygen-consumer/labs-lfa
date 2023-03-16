@@ -16,9 +16,6 @@ private:
     std::map<int, bool> states;
     int start_state;
 
-    std::string input_file;
-    std::string output_file;
-
     std::ifstream fin{};
     std::ofstream fout{};
 
